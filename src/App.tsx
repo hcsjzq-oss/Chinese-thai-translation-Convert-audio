@@ -487,14 +487,47 @@ export default function App() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4.5 bg-rose-50 border border-rose-100 text-rose-700 rounded-3xl flex items-start gap-3"
+                className="p-5.5 bg-rose-50 border border-rose-100 text-rose-700 rounded-3xl flex items-start gap-3.5 shadow-sm"
               >
-                <div className="p-1.5 bg-rose-100 rounded-xl text-rose-600 shrink-0">
-                  <X className="w-4.5 h-4.5" />
+                <div className="p-2 bg-rose-100 rounded-xl text-rose-600 shrink-0">
+                  <X className="w-5 h-5" />
                 </div>
-                <div className="space-y-1">
-                  <h4 className="font-bold text-sm text-rose-800">翻译请求发生错误</h4>
-                  <p className="text-xs leading-relaxed text-rose-600">{error}</p>
+                <div className="space-y-3 flex-1 min-w-0">
+                  <div>
+                    <h4 className="font-bold text-sm text-rose-85 gap-1 inline-flex items-center">
+                      翻译请求发生错误
+                    </h4>
+                    <p className="text-xs leading-relaxed text-rose-600 font-medium mt-1">{error}</p>
+                  </div>
+
+                  {/* Smart detection for local network blocked issues */}
+                  {(error.toLowerCase().includes("fetch failed") || window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") && (
+                    <div className="mt-3 bg-white/80 border border-rose-200/50 rounded-2xl p-4 text-xs space-y-2.5 text-slate-705">
+                      <div className="flex items-center gap-1.5 font-bold text-rose-800">
+                        <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                        💡 本地局域网 (localhost) 网络直连受阻解决方案
+                      </div>
+                      <p className="text-slate-500 leading-relaxed">
+                        您正在本地电脑运行此项目。由于国内环境无法直接访问 Google 官方接口域名，Node.js 后端服务请求时会触发 <b>fetch failed</b> 连接失败。
+                      </p>
+                      <div className="space-y-1.5 text-slate-600">
+                        <div className="font-semibold text-slate-800">🛠️ 快速排除问题方案：（三选一）</div>
+                        <ul className="list-decimal pl-4.5 space-y-1 leading-relaxed">
+                          <li>
+                            <b>配置 API 代理：</b>打开您本地项目根目录的 <b>.env</b> 文件，添加一行中转/代理 Base URL。例如：<br />
+                            <code className="bg-slate-100 text-rose-600 px-1 py-0.5 rounded font-mono break-all text-[11px] block mt-1">GEMINI_API_BASE_URL="https://api.openai-hk.com/v1"</code>
+                            或者使用其他任一可用的代理域名，设置保存后在本地命令行终端<b>重启 dev 服务器</b>即可。
+                          </li>
+                          <li>
+                            <b>开启全局代理：</b>确保您本机的代理工具开启了全局系统代理（或 TUN/后门路由），从而允许本机的 Node.js 科学上网。
+                          </li>
+                          <li>
+                            <b>直接线上预览：</b>您也可以在当前 AI Studio 预览窗口直接测试操作，此时云平台服务器是全自动安全配置且直连 Google 官方 API 的！
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}

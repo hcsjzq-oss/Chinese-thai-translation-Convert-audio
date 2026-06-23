@@ -26,14 +26,30 @@ const getAIClient = (): { client: GoogleGenAI | null; error?: string } => {
   }
   
   if (!aiInstance) {
-    aiInstance = new GoogleGenAI({
+    const customBaseUrl = process.env.GEMINI_API_BASE_URL;
+    const clientOptions: any = {
       apiKey,
-      httpOptions: {
+    };
+
+    // If user provided custom proxy or custom baseUrl in .env, inject it
+    if (customBaseUrl) {
+      console.log(`📡 Using custom Gemini API Base URL / Proxy: ${customBaseUrl}`);
+      clientOptions.baseUrl = customBaseUrl;
+      clientOptions.httpOptions = {
+        baseUrl: customBaseUrl,
         headers: {
           "User-Agent": "aistudio-build",
         },
-      },
-    });
+      };
+    } else {
+      clientOptions.httpOptions = {
+        headers: {
+          "User-Agent": "aistudio-build",
+        },
+      };
+    }
+
+    aiInstance = new GoogleGenAI(clientOptions);
   }
   return { client: aiInstance };
 };
