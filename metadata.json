@@ -1,0 +1,8 @@
+{
+  "name": "中泰双语语音翻译与收藏夹",
+  "description": "便携式中泰互译工具，支持实时语音输入识别、拼音/卡拉OK发音注音、词汇收藏夹以及发音朗读，专为语言学习和旅行交流设计。",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
